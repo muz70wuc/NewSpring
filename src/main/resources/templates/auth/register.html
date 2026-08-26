@@ -12,16 +12,21 @@
                 <h2>Neuen Account erstellen</h2>
 
                 <!-- Formular schickt die Daten per POST an /register-->
-                <form th:action="@{/register}" method="post">
-                    <div>
-                        <label>Benutzername</label>
-                        <input type="text" name="username" required>
-                    </div>
-                    <div>
-                        <label>Passwort</label>
-                        <input type="password" name="password" required>
-                    </div>
-                    <button type="submit">Registrieren</button>
+                <form th:action="@{/register}" th:object="${registerDto}" method="post">
+            
+                    <label for="username">Benutzername</label>
+                    <input type="text" id="username" th:field="*{username}" placeholder="Benutzername">
+                    <small style="color: red;" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+
+                    <label for="password">Passwort</label>
+                    <input type="password" id="password" th:field="*{password}" placeholder="Mindestlänge: 8 Zeichen">
+                    <small style="color: red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+
+                    <label for="passwordConfirm">Passwort bestätigen</label>
+                    <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" placeholder="Passwort wiederholen">
+                    <small style="color: red;" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></small>
+
+                    <button type="submit" style="margin-top: 1.5rem;">Konto erstellen</button>
                 </form>
                 <p>Bereits registriert? <a th:href="@{/login}">Hier einloggen</a></p>
             </article>
