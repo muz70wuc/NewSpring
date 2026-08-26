@@ -1,6 +1,5 @@
 package learning.basics.config;
 
-import learning.basics.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import learning.basics.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -31,18 +32,26 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/register", "/login", "/h2-console/**", "/css/**").permitAll()
                         .anyRequest().authenticated())
-                // HIER neu hinzufügen: Spring sagen, wie Benutzer geladen werden
                 .userDetailsService(userDetailsService)
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/userHome", true)
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll());
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login?logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll()
+                );
+
+        // Verhindert, dass der Browser geschützte Seiten (wie /userHome) im lokalen Cache speichert
+        http.headers(headers -> headers
+            .cacheControl(cache -> cache.disable()) 
+            .frameOptions(frame -> frame.sameOrigin())
+        );
 
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
-        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();
     }

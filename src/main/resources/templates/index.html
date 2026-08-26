@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
       th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
-<head>
-    <title>Startseite - MeineApp</title>
-</head>
-<body>
-    <!-- Dieser section-Block wird in das base-Layout eingesetzt -->
-    <section>
-        <h2>Herzlich Willkommen!</h2>
-        <p>Das ist die öffentliche Startseite unserer Spring Boot Anwendung.</p>
+    <head>
+        <title>Startseite - MeineApp</title>
+    </head>
+    <body>
+        <!-- Dieser section-Block wird in das base-Layout eingesetzt -->
+        <section>
+            <h2>Herzlich Willkommen!</h2>
+            <p>Das ist die öffentliche Startseite unserer Spring Boot Anwendung.</p>
 
-        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-            <a th:href="@{/login}" role="button">Anmelden</a>
-            <a th:href="@{/register}" role="button" class="secondary">Registrieren</a>
-        </div>
-    </section>
-</body>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <a th:href="@{/login}" role="button">Anmelden</a>
+                <a th:href="@{/register}" role="button" class="secondary">Registrieren</a>
+            </div>
+        </section>
+    </body>
 </html>

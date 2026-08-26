@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
       th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
-<head>
-    <title>Dashboard - MeineApp</title>
-</head>
-<body>
-    <section>
-        <h2>Willkommen, <span th:text="${username}">Benutzer</span>!</h2>
-        <p>Du befindest dich im geschützten Mitgliederbereich.</p>
+    <head>
+        <title>Dashboard - MeineApp</title>
+    </head>
+    <body>
+        <section>
+            <h2>Willkommen, <span th:text="${username}">Benutzer</span>!</h2>
+            <p>Du befindest dich im geschützten Mitgliederbereich.</p>
         
-        <form th:action="@{/logout}" method="post" style="margin-top: 2rem;">
-            <button type="submit" class="secondary">Abmelden</button>
-        </form>
-    </section>
-</body>
+            <form th:action="@{/logout}" method="post" style="margin-top: 2rem;">
+                <button type="submit" class="secondary">Abmelden</button>
+            </form>
+        </section>
+    </body>
 </html>
