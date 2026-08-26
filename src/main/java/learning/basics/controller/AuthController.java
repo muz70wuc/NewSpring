@@ -16,13 +16,13 @@ public class AuthController {
     // Zeigt die Login-Seite an
     @GetMapping("/login")
     public String loginPage() {
-        return "login"; // Öffnet src/main/resources/templates/login.html
+        return "auth/login"; // Öffnet src/main/resources/templates/login.html
     }
 
     // Zeigt die Registrierungs-Seite an
     @GetMapping("/register")
     public String registerPage() {
-        return "register"; // Öffnet src/main/resources/templates/register.html
+        return "auth/register"; // Öffnet src/main/resources/templates/register.html
     }
 
     // Verarbeitet das Absenden des Registrierungs-Formulars (POST)
@@ -31,11 +31,5 @@ public class AuthController {
         userService.registerUser(username, password);
         // Nach erfolgreicher Registrierung leiten wir auf den Login weiter
         return "redirect:/login?registered";
-    }
-
-    // Eine geschützte Startseite nach dem Einloggen
-    @GetMapping("/home")
-    public String homePage() {
-        return "home";
     }
 }

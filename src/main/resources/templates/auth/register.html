@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Register</title>
+        <!-- Pico style-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    </head>
+    <body>
+        <main class="container" style="max-width: 500px; margin-top: 5rem;">
+            <article>
+                <h2>Neuen Account erstellen</h2>
+
+                <!-- Formular schickt die Daten per POST an /register-->
+                <form th:action="@{/register}" method="post">
+                    <div>
+                        <label>Benutzername</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div>
+                        <label>Passwort</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit">Registrieren</button>
+                </form>
+                <p>Bereits registriert? <a th:href="@{/login}">Hier einloggen</a></p>
+            </article>
+        </main>
+    </body>
+</html>

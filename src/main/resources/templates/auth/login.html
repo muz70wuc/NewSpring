@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <!-- Pico style-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    </head>
+    <body>
+        <main class="container" style="max-width: 500px; margin-top: 5rem;">
+        <article>
+                <h2>Anmelden</h2>
+
+                <!-- Zeigt eine Meldung an, wenn die Registrierung geklappt hat -->
+                <div th:if="${param.registered}" style="color: green;">
+                    Registrierung erfolgreich! Du kannst dich jetzt einloggen.
+                </div>
+
+                <!-- Zeigt eine Fehlermeldung bei falschem Passwort/User -->
+                <div th:if="${param.error}" style="color: red;">
+                    Ungültiger Benutzername oder Passwort.
+                </div>
+
+                <!-- Spring Security erwartet die POST-Anfrage standardmäßig an /login -->
+                <form th:action="@{/login}" method="post">
+                    <div>
+                        <label>Benutzername</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div>
+                        <label>Passwort</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit">Einloggen</button>
+                </form>
+
+                <p>Noch kein Account erstellt? <a th:href="@{/register}">Hier registrieren</a></p>
+            </article>
+        </main>
+    </body>
+</html>

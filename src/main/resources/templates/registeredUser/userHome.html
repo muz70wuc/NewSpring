@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Home</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    </head>
+    <body>
+        <main class="container" style="max-width: 600px; margin-top: 5rem;">
+            <article>
+                <h2><span th:text="${username}">Benutzer</span>!</h2>
+                <p>Du bist erfolgreich eingeloggt.</p>
+            
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="secondary">Abmelden</button>
+                </form>
+            </article>
+        </main>
+    </body>
+</html>

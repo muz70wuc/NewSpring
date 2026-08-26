@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Willkommen</title>
+    <!-- Pico.css für automatisches Styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+    <main class="container" style="max-width: 600px; margin-top: 5rem;">
+        <article style="text-align: center;">
+            <h2>Herzlich Willkommen!</h2>
+            <p>Das ist die öffentliche Startseite unserer Spring Boot Anwendung.</p>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <!-- Link zur Login-Seite -->
+                <a th:href="@{/login}" role="button">Anmelden</a>
+                
+                <!-- Link zur Registrierungsseite -->
+                <a th:href="@{/register}" role="button" class="secondary">Registrieren</a>
+            </div>
+        </article>
+    </main>
+</body>
+</html>
