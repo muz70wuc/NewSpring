@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Der Titel wird dynamisch von der jeweiligen Seite übergeben -->
+    <title th:replace="${title}">Mein Projekt</title>
+    <!-- ZENTRAL: Pico.css nur noch 1x hier eingebunden! -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+    
+    <!-- Gemeinsame Navigation -->
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong><a th:href="@{/}" class="secondary">MeineApp</a></strong></li>
+            </ul>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/userHome}">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hier wird der eigentliche Inhalt der jeweiligen Seite eingefügt -->
+    <main class="container" style="max-width: 700px; margin-top: 2rem;">
+        <article th:replace="${content}">
+            <!-- Platzhalter -->
+        </article>
+    </main>
+
+    <!-- Gemeinsamer Footer -->
+    <footer class="container" style="text-align: center; margin-top: 3rem; font-size: 0.8rem; color: #888;">
+        <p>&copy; 2026 Meine App - Alle Rechte vorbehalten</p>
+    </footer>
+
+</body>
+</html>

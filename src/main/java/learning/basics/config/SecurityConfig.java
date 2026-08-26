@@ -29,7 +29,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/h2-console/**", "/css/**").permitAll()
+                        .requestMatchers("/", "/register", "/login", "/h2-console/**", "/css/**").permitAll()
                         .anyRequest().authenticated())
                 // HIER neu hinzufügen: Spring sagen, wie Benutzer geladen werden
                 .userDetailsService(userDetailsService)
