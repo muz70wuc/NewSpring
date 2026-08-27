@@ -22,10 +22,10 @@ public class RateLimitingFilter extends OncePerRequestFilter {
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
     private Bucket createNewBucket() {
-        // Maximal 3 Anfragen pro Minute
+        // Maximal 3 Anfragen pro 5 Minuten
         Bandwidth limit = Bandwidth.builder()
                 .capacity(3)
-                .refillIntervally(3, Duration.ofMinutes(1))
+                .refillIntervally(3, Duration.ofMinutes(5))
                 .build();
         return Bucket.builder().addLimit(limit).build();
     }
@@ -45,9 +45,10 @@ public class RateLimitingFilter extends OncePerRequestFilter {
             Bucket bucket = buckets.computeIfAbsent(clientIp, k -> createNewBucket());
 
             if (!bucket.tryConsume(1)) {
-                response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+                response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value()); // HTTP 429
+                response.setContentType("text/plain; charset=UTF-8");     // Verhindert den Download!
                 response.getWriter().write("Zu viele Registrierungsversuche. Bitte warte 1 Minute.");
-                return;
+                return; // Bricht die Filterkette ab
             }
         }
 
