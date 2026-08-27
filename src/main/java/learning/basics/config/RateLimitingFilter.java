@@ -33,12 +33,24 @@ public class RateLimitingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        
         // Nur den POST auf /register limitieren
         if ("/register".equals(request.getRequestURI()) && "POST".equalsIgnoreCase(request.getMethod())) {
             
-            // Liest bei Cloudflare die echte Client-IP aus
+            // 1. Primär: Echte Besucher-IP von Cloudflare
             String clientIp = request.getHeader("CF-Connecting-IP");
-            if (clientIp == null || clientIp.isEmpty()) {
+
+            // 2. Fallback: Standard-Header für Reverse Proxies
+            if (clientIp == null || clientIp.isBlank()) {
+                String xForwardedFor = request.getHeader("X-Forwarded-For");
+                if (xForwardedFor != null && !xForwardedFor.isBlank()) {
+                    // Falls mehrere Proxies in der Kette hängen, ist die erste IP die des echten Clients
+                    clientIp = xForwardedFor.split(",")[0].trim();
+                }
+            }
+
+            // 3. Fallback: Lokale Direktverbindung (z. B. localhost beim Testen)
+            if (clientIp == null || clientIp.isBlank()) {
                 clientIp = request.getRemoteAddr();
             }
 
@@ -60,7 +72,7 @@ public class RateLimitingFilter extends OncePerRequestFilter {
                         <main class="container" style="max-width: 500px; margin-top: 5rem;">
                             <article>
                                 <h2>Zu viele Versuche</h2>
-                                <p>Du hast die maximale Anzahl an Versuchen erreicht. Bitte warte 5 Minute, bevor du es erneut versuchst.</p>
+                                <p>Du hast die maximale Anzahl an Versuchen erreicht. Bitte warte 5 Minuten, bevor du es erneut versuchst.</p>
                                 <a href="/register" role="button">Zurück zur Registrierung</a>
                             </article>
                         </main>
