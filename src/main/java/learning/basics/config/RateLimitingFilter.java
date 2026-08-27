@@ -45,10 +45,31 @@ public class RateLimitingFilter extends OncePerRequestFilter {
             Bucket bucket = buckets.computeIfAbsent(clientIp, k -> createNewBucket());
 
             if (!bucket.tryConsume(1)) {
-                response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value()); // HTTP 429
-                response.setContentType("text/plain; charset=UTF-8");     // Verhindert den Download!
-                response.getWriter().write("Zu viele Registrierungsversuche. Bitte warte 5 Minute.");
-                return; // Bricht die Filterkette ab
+                response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+                response.setContentType("text/html; charset=UTF-8");
+    
+                String htmlResponse = """
+                    <!DOCTYPE html>
+                    <html lang="de">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Zu viele Anfragen</title>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+                    </head>
+                    <body>
+                        <main class="container" style="max-width: 500px; margin-top: 5rem;">
+                            <article>
+                                <h2>Zu viele Versuche</h2>
+                                <p>Du hast die maximale Anzahl an Versuchen erreicht. Bitte warte 5 Minute, bevor du es erneut versuchst.</p>
+                                <a href="/register" role="button">Zurück zur Registrierung</a>
+                            </article>
+                        </main>
+                    </body>
+                    </html>
+                    """;
+        
+                response.getWriter().write(htmlResponse);
+                return;
             }
         }
 
