@@ -1,38 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    th:fragment="layout(title, content)">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- Der Titel wird dynamisch von der jeweiligen Seite übergeben -->
-        <title th:replace="${title}">Mein Projekt</title>
-        <!-- ZENTRAL: Pico.css nur noch 1x hier eingebunden! -->
+        <meta name="robots" content="noindex, nofollow">
+        <title th:replace="${title}">DS-Portfolio</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     </head>
     <body>
     
-        <!-- Gemeinsame Navigation -->
         <header class="container">
             <nav>
                 <ul>
-                    <li><strong><a th:href="@{/}" class="secondary">MeineApp</a></strong></li>
+                    <li><strong><a th:href="@{/}" class="secondary">DS-Portfolio</a></strong></li>
                 </ul>
                 <ul>
                     <li><a th:href="@{/}">Home</a></li>
-                    <li><a th:href="@{/userHome}">Dashboard</a></li>
+
+                    <!-- NUR FÜR ANGEMELDETE NUTZER -->
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/userHome}">Dashboard</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">Profil</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/contact}">Kontakt</a></li>
+                    <li sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post" style="margin: 0; display: inline;">
+                            <button type="submit" class="secondary outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Logout</button>
+                        </form>
+                    </li>
+
+                    <!-- NUR FÜR ANONYME GÄSTE -->
+                    <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Anmelden</a></li>
                 </ul>
             </nav>
         </header>
 
-        <!-- Hier wird der eigentliche Inhalt der jeweiligen Seite eingefügt -->
         <main class="container" style="max-width: 700px; margin-top: 2rem;">
             <article th:replace="${content}">
                 <!-- Platzhalter -->
             </article>
         </main>
 
-        <!-- Gemeinsamer Footer -->
         <footer class="container" style="text-align: center; margin-top: 3rem; font-size: 0.8rem; color: #888;">
-            <p>&copy; 2026 Meine App - Alle Rechte vorbehalten</p>
+            <p>&copy; 2026 DS-Portfolio - Alle Rechte vorbehalten</p>
         </footer>
 
     </body>

@@ -1,41 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
     <head>
-        <meta charset="UTF-8">
-        <title>Register</title>
-        <!-- Pico style-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+        <title>Register - DS-Portfolio</title>
     </head>
     <body>
-        <main class="container" style="max-width: 500px; margin-top: 5rem;">
-            <article>
-                <h2>Neuen Account erstellen</h2>
+        <section>
+            <h2>Neuen Account erstellen</h2>
 
-                <!-- Formular schickt die Daten per POST an /register-->
-                <form th:action="@{/register}" th:object="${registerDto}" method="post">
-            
-                    <label for="username">Benutzername</label>
-                    <input type="text" id="username" th:field="*{username}" placeholder="Benutzername">
-                    <small style="color: red;" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+            <!-- Formular schickt die Daten per POST an /register-->
+            <form th:action="@{/register}" th:object="${registerDto}" method="post">
+        
+                <label for="username">Benutzername</label>
+                <input type="text" id="username" th:field="*{username}" placeholder="Benutzername">
+                <small style="color: red;" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
 
-                    <label for="password">Passwort</label>
-                    <input type="password" id="password" th:field="*{password}" placeholder="Mindestlänge: 8 Zeichen">
-                    <small style="color: red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+                <label for="password">Passwort</label>
+                <input type="password" id="password" th:field="*{password}" placeholder="Mindestlänge: 8 Zeichen">
+                <small style="color: red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
 
-                    <label for="passwordConfirm">Passwort bestätigen</label>
-                    <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" placeholder="Passwort wiederholen">
-                    <small style="color: red;" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></small>
+                <label for="passwordConfirm">Passwort bestätigen</label>
+                <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" placeholder="Passwort wiederholen">
+                <small style="color: red;" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></small>
 
-                    <!-- Honeypot: Für Menschen unsichtbar, Bots füllen es aus -->
-                    <div style="display: none;" aria-hidden="true">
-                        <label for="website">Bitte freilassen</label>
-                        <input type="text" id="website" th:field="*{website}" tabindex="-1" autocomplete="off">
-                    </div>
+                <!-- Honeypot: Für Menschen unsichtbar, Bots füllen es aus -->
+                <div style="display: none;" aria-hidden="true">
+                    <label for="website">Bitte freilassen</label>
+                    <input type="text" id="website" th:field="*{website}" tabindex="-1" autocomplete="off">
+                </div>
 
-                    <button type="submit" style="margin-top: 1.5rem;">Konto erstellen</button>
-                </form>
-                <p>Bereits registriert? <a th:href="@{/login}">Hier einloggen</a></p>
-            </article>
-        </main>
+                <button type="submit" style="margin-top: 1.5rem;">Konto erstellen</button>
+            </form>
+            <p style="margin-top: 1.5rem;">Bereits registriert? <a th:href="@{/login}">Hier einloggen</a></p>
+        </section>
     </body>
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+    th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
+    <head>
+        <title>Kontakt - DS-Portfolio</title>
+    </head>
+    <body>
+        <section>
+            <h2>Kontakt aufnehmen</h2>
+            <p>Sende mir direkt eine Nachricht über die Plattform.</p>
+
+            <!-- Erfolgsmeldung -->
+            <div th:if="${successMessage}" style="background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                <span th:text="${successMessage}"></span>
+            </div>
+
+            <form th:action="@{/contact}" th:object="${contactDto}" method="post">
+                
+                <label for="subject">Betreff</label>
+                <input type="text" id="subject" th:field="*{subject}" placeholder="z. B. Projektanfrage / Vorstellungsgespräch">
+                <small style="color: red;" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></small>
+
+                <label for="message">Deine Nachricht</label>
+                <textarea id="message" th:field="*{message}" rows="6" placeholder="Beschreibe kurz dein Anliegen..."></textarea>
+                <small style="color: #666; display: block; margin-top: -0.5rem; margin-bottom: 1rem;">
+                    ℹ️ <em>Deine im Profil hinterlegten Kontaktdaten (E-Mail, Firma, Name, Telefon) werden automatisch an diese Nachricht angehängt.</em>
+                </small>
+                <small style="color: red;" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></small>
+                <button type="submit" style="margin-top: 1.5rem;">Nachricht absenden</button>
+            </form>
+        </section>
+    </body>
+</html>
