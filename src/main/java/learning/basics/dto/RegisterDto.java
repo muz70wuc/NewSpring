@@ -16,6 +16,8 @@ public class RegisterDto {
     @NotBlank(message = "Bitte bestätige dein Passwort")
     private String passwordConfirm;
 
+    private String website;
+
     public RegisterDto() {}
 
     //Getter und Setter
@@ -42,5 +44,13 @@ public class RegisterDto {
 
     public String getPasswordConfirm() {
         return passwordConfirm;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }

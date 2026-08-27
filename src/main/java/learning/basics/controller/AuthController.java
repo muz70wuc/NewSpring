@@ -38,6 +38,13 @@ public class AuthController {
     public String registerUser(@Valid @ModelAttribute("registerDto") RegisterDto registerDto,
                                BindingResult bindingResult,
                                Model model) {
+
+        // 0. Honeypot-Prüfung (Falls befüllt -> lautlos abbrechen oder auf Login leiten)
+        if (registerDto.getWebsite() != null && !registerDto.getWebsite().isBlank()) {
+            // Täuscht dem Bot einen Erfolg vor, speichert aber nichts
+            return "redirect:/login?registered"; 
+        }
+        
         // 1. Manuelle Logik-Prüfungen
         if (!registerDto.getPassword().equals(registerDto.getPasswordConfirm())) {
             bindingResult.rejectValue("passwordConfirm", "error.registerDto", "Die Passwörter stimmen nicht überein.");

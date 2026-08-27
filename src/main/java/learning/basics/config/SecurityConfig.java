@@ -15,10 +15,12 @@ import learning.basics.service.CustomUserDetailsService;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final RateLimitingFilter rateLimitingFilter;
 
     // CustomUserDetailsService per Konstruktor einbinden
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(CustomUserDetailsService userDetailsService, RateLimitingFilter rateLimitingFilter) {
         this.userDetailsService = userDetailsService;
+        this.rateLimitingFilter = rateLimitingFilter;
     }
 
     @Bean
@@ -52,6 +54,7 @@ public class SecurityConfig {
         );
 
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
+        http.addFilterBefore(rateLimitingFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

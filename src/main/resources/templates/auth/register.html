@@ -26,6 +26,12 @@
                     <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" placeholder="Passwort wiederholen">
                     <small style="color: red;" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></small>
 
+                    <!-- Honeypot: Für Menschen unsichtbar, Bots füllen es aus -->
+                    <div style="display: none;" aria-hidden="true">
+                        <label for="website">Bitte freilassen</label>
+                        <input type="text" id="website" th:field="*{website}" tabindex="-1" autocomplete="off">
+                    </div>
+
                     <button type="submit" style="margin-top: 1.5rem;">Konto erstellen</button>
                 </form>
                 <p>Bereits registriert? <a th:href="@{/login}">Hier einloggen</a></p>
