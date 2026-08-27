@@ -47,7 +47,7 @@ public class RateLimitingFilter extends OncePerRequestFilter {
             if (!bucket.tryConsume(1)) {
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value()); // HTTP 429
                 response.setContentType("text/plain; charset=UTF-8");     // Verhindert den Download!
-                response.getWriter().write("Zu viele Registrierungsversuche. Bitte warte 1 Minute.");
+                response.getWriter().write("Zu viele Registrierungsversuche. Bitte warte 5 Minute.");
                 return; // Bricht die Filterkette ab
             }
         }
