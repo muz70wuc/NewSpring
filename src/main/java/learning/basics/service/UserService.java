@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import learning.basics.dto.ContactDto;
 import learning.basics.dto.ProfileDto;
 import learning.basics.dto.RegisterDto;
 import learning.basics.mapper.UserMapper;
@@ -17,11 +18,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.emailService = emailService;
     }
 
     public boolean existsUsername(String username) {
@@ -38,6 +41,13 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
         User user = userMapper.toEntity(registerDto, encodedPassword);
         return userRepository.save(user);
+    }
+
+    // --- Kontaktformular verarbeiten ---
+    @Transactional(readOnly = true)
+    public void processContactForm(String username, ContactDto contactDto) {
+        User currentUser = findByUsername(username);
+        emailService.sendContactEmail(currentUser, contactDto);
     }
 
     // --- Profil auslesen für GET /profile ---
