@@ -69,7 +69,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Benutzer nicht gefunden: " + username));
 
         // Wenn E-Mail ODER Firmenname fehlt/leer ist, gilt das Profil als unvollständig
-        return user.getEmail() == null || user.getEmail().isBlank() 
+        return user.getEmail() == null || user.getEmail().isBlank()
             || user.getCompanyName() == null || user.getCompanyName().isBlank();
-}
+    }
 }
