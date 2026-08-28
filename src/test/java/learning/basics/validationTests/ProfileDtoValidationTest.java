@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Test;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import learning.basics.dto.ProfileDto;
 
-class ProfileValidationTest {
+class ProfileDtoValidationTest {
 
-    private Validator validator;
-
-    @BeforeEach
-    void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private ProfileDto dto;
 
     /**
      * Erstellt ein vollständig gültiges ProfileDto als Basis für alle Tests.
      */
-    private ProfileDto createValidProfileDto() {
-        ProfileDto dto = new ProfileDto();
+    @BeforeEach
+    void setUp() {
+        dto = new ProfileDto();
         dto.setEmail("max.mustermann@beispiel.de");
         dto.setCompanyName("Muster GmbH");
         dto.setContactPerson("Max Mustermann");
         dto.setPhoneNumber("+49 123 456789");
-        return dto;
     }
 
     // ==========================================
@@ -43,8 +37,6 @@ class ProfileValidationTest {
     @Test
     @DisplayName("Sollte ein vollständig korrektes ProfileDto ohne Fehler akzeptieren")
     void testValidProfile() {
-        ProfileDto dto = createValidProfileDto();
-
         Set<ConstraintViolation<ProfileDto>> violations = validator.validate(dto);
 
         assertTrue(violations.isEmpty(), "Keine Fehler erwartet bei gültigen Daten");
@@ -57,8 +49,6 @@ class ProfileValidationTest {
     @Test
     @DisplayName("E-Mail: Sollte Fehler werfen wenn leer, blank oder ungültiges Format")
     void testEmailConstraints() {
-        ProfileDto dto = createValidProfileDto();
-
         // Test 1: Leer / Blank (@NotBlank)
         dto.setEmail("   ");
         Set<ConstraintViolation<ProfileDto>> violationsBlank = validator.validate(dto);
@@ -79,8 +69,6 @@ class ProfileValidationTest {
     @Test
     @DisplayName("Firmenname: Sollte Fehler werfen wenn leer oder länger als 100 Zeichen")
     void testCompanyNameConstraints() {
-        ProfileDto dto = createValidProfileDto();
-
         // Test 1: Leer / Blank (@NotBlank)
         dto.setCompanyName("");
         Set<ConstraintViolation<ProfileDto>> violationsBlank = validator.validate(dto);
@@ -101,8 +89,6 @@ class ProfileValidationTest {
     @Test
     @DisplayName("Kontaktperson: Sollte Fehler werfen wenn leer oder länger als 50 Zeichen")
     void testContactPersonConstraints() {
-        ProfileDto dto = createValidProfileDto();
-
         // Test 1: Leer / Blank (@NotBlank)
         dto.setContactPerson("  ");
         Set<ConstraintViolation<ProfileDto>> violationsBlank = validator.validate(dto);
@@ -123,8 +109,6 @@ class ProfileValidationTest {
     @Test
     @DisplayName("Telefonnummer: Sollte leeren String akzeptieren, aber bei falschem Format fehlschlagen")
     void testPhoneNumberConstraints() {
-        ProfileDto dto = createValidProfileDto();
-
         // Test 1: Leerer String ist erlaubt laut RegEx (^$)
         dto.setPhoneNumber("");
         Set<ConstraintViolation<ProfileDto>> violationsEmpty = validator.validate(dto);
