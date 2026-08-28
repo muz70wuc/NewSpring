@@ -1,18 +1,22 @@
 package learning.basics.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class ProfileDto {
 
-    @Email(message = "Bitte gib eine gültige E-Mail-Adresse ein")
+    @NotBlank(message = "Die E-Mail-Adresse darf nicht leer sein.")
+    @Email(message = "Bitte gib eine gültige E-Mail-Adresse ein (z. B. name@domain.de).")
     private String email;
 
-    @Size(max = 100, message = "Der Firmenname darf maximal 100 Zeichen lang sein")
+    @NotBlank(message = "Der Firmenname darf nicht leer sein.")
+    @Size(max = 100, message = "Der Firmenname darf maximal 100 Zeichen lang sein.")
     private String companyName;
 
-    @Size(max = 50, message = "Der Name der Kontaktperson darf maximal 100 Zeichen lang sein")
+    @NotBlank(message = "Der Name der Kontaktperson darf nicht leer sein.")
+    @Size(max = 50, message = "Der Name der Kontaktperson darf maximal 50 Zeichen lang sein.")
     private String contactPerson;
 
     // Erlaubt Ziffern, Leerzeichen, Plus, Bindestriche und Klammern

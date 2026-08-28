@@ -60,7 +60,13 @@ public class UserController {
                                 BindingResult bindingResult,
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 RedirectAttributes redirectAttributes) {
+        
+        // Prüfen, ob die E-Mail bereits von jemand anderem genutzt wird
+        if (userService.isEmailTakenByAnotherUser(profileDto.getEmail(), userDetails.getUsername())) {
+            bindingResult.rejectValue("email", "error.profileDto", "Diese E-Mail-Adresse wird bereits verwendet.");
+        }
 
+        // Falls Formate falsch, Felder leer oder E-Mail vergeben -> Zurück zum Formular
         if (bindingResult.hasErrors()) {
             return "registeredUser/profile";
         }

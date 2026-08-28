@@ -72,4 +72,14 @@ public class UserService {
         return user.getEmail() == null || user.getEmail().isBlank()
             || user.getCompanyName() == null || user.getCompanyName().isBlank();
     }
+
+    @Transactional
+    public boolean isEmailTakenByAnotherUser(String email, String currentUsername) {
+        if (email == null || email.isBlank()) {
+            return false;
+        }
+        return userRepository.findByEmail(email)
+                .map(user -> !user.getUsername().equals(currentUsername))
+                .orElse(false);
+    }
 }
