@@ -24,6 +24,7 @@ public class EmailService {
     public void sendContactEmail(User sender, ContactDto contactDto) {
         SimpleMailMessage mail = new SimpleMailMessage();
         
+        mail.setFrom(targetEmail);
         mail.setTo(targetEmail);
         mail.setSubject("[DS-Portfolio] " + contactDto.getSubject());
 
