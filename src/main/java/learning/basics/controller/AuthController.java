@@ -42,7 +42,7 @@ public class AuthController {
         // 0. Honeypot-Prüfung (Falls befüllt -> lautlos abbrechen oder auf Login leiten)
         if (registerDto.getWebsite() != null && !registerDto.getWebsite().isBlank()) {
             // Täuscht dem Bot einen Erfolg vor, speichert aber nichts
-            return "redirect:/login?registered";
+            return "redirect:/login";
         }
         
         // 1. Manuelle Logik-Prüfungen
