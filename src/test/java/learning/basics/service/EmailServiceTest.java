@@ -1,26 +1,35 @@
 package learning.basics.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import learning.basics.dto.ContactDto;
 import learning.basics.model.User;
 
-@SpringBootTest
-// Liest das Standard-Format aus deiner variable.env direkt im Hauptordner ein:
-@TestPropertySource(locations = "file:variable.env")
+@ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
 
-    @Autowired
+    @Mock
+    private JavaMailSender mailSender;
+
+    @InjectMocks
     private EmailService emailService;
 
     @Test
-    @DisplayName("Sendet eine echte Kontakt-E-Mail über 1&1 SMTP")
+    @DisplayName("Sollte Kontakt-E-Mail über den MailService verarbeiten ohne echten SMTP-Aufruf")
     void testSendContactEmailSuccess() {
+        // Arrange
         User testUser = new User();
         testUser.setUsername("MaxMustermann");
         testUser.setEmail("kunde@beispiel.de");
@@ -32,8 +41,12 @@ class EmailServiceTest {
         contactDto.setSubject("Anfrage für Portfolio-Projekt");
         contactDto.setMessage("Hallo, ich möchte gerne eine Anfrage bezüglich eines B2B-Projekts stellen.");
 
+        // Act & Assert
         assertDoesNotThrow(() -> {
             emailService.sendContactEmail(testUser, contactDto);
-        }, "Der E-Mail-Versand sollte ohne Fehler durchlaufen");
+        }, "Der E-Mail-Versand sollte ohne Fehler verarbeitet werden");
+
+        // Verify
+        verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
     }
 }
