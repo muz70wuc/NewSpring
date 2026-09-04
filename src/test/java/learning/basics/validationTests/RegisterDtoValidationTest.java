@@ -27,6 +27,7 @@ class RegisterDtoValidationTest {
         dto.setUsername("testuser");
         dto.setPassword("geheim123");
         dto.setPasswordConfirm("geheim123");
+        dto.setTermsAccepted(true);
         dto.setWebsite(""); // Optionales Feld / Honeypot
     }
 
@@ -100,5 +101,18 @@ class RegisterDtoValidationTest {
 
         assertFalse(violationsBlank.isEmpty());
         assertTrue(violationsBlank.stream().anyMatch(v -> v.getPropertyPath().toString().equals("passwordConfirm")));
+    }
+
+    // ==========================================
+    // 5. NUTZUNGSBEDINGUNG-DATENSCHUTZ-BESTÄTIGUNG VALIDIERUNG (@assertTrue)
+    // ==========================================
+    @Test
+    @DisplayName("termsAccepted: sollte Fehler werfen wenn false")
+    void testTermsAcceptedFalse() {
+        dto.setTermsAccepted(false);
+        Set<ConstraintViolation<RegisterDto>> violationsSetFalse = validator.validate(dto);
+
+        assertFalse(violationsSetFalse.isEmpty());
+        assertTrue(violationsSetFalse.stream().anyMatch(v -> v.getPropertyPath().toString().equals("termsAccepted")));
     }
 }
