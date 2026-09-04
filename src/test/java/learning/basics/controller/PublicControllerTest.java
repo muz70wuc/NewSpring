@@ -23,4 +23,20 @@ class PublicControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
+
+    @Test
+    @DisplayName("GET / privacy")
+    void testPrivacy() throws Exception {
+        mockMvc.perform(get("/privacy"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("agreement/privacy"));
+    }
+
+    @Test
+    @DisplayName("GET / - Zeigt terms für das Registry")
+    void testTerms() throws Exception {
+        mockMvc.perform(get("/terms"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("agreement/terms"));
+    }
 }
