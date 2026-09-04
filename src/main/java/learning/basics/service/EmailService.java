@@ -14,7 +14,7 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     // Deine eigene Ziel-E-Mail-Adresse aus application.properties
-    @Value("${app.mail.target-address:deine-email@beispiel.de}")
+    @Value("${MAIL_TARGET}")
     private String targetEmail;
 
     public EmailService(JavaMailSender mailSender) {
