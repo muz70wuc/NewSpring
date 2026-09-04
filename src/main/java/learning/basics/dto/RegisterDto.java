@@ -1,5 +1,6 @@
 package learning.basics.dto;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -15,6 +16,9 @@ public class RegisterDto {
 
     @NotBlank(message = "Bitte bestätige dein Passwort")
     private String passwordConfirm;
+
+    @AssertTrue(message = "Du musst den Datenschutzbestimmungen und Nutzungsbedingungen zustimmen.")
+    private boolean termsAccepted;
 
     private String website;
 
@@ -52,5 +56,13 @@ public class RegisterDto {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public boolean isTermsAccepted() {
+        return termsAccepted;
+    }
+
+    public void setTermsAccepted(boolean termsAccepted) {
+        this.termsAccepted = termsAccepted;
     }
 }
