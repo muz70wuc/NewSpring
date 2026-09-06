@@ -35,7 +35,7 @@
                         Ich akzeptiere die <a th:href="@{/terms}" target="_blank">Nutzungsbedingungen</a>
                         und die <a th:href="@{/privacy}" target="_blank">Datenschutzerklärung</a> (inkl. Haftungsausschluss).
                     </label>
-                    <p th:if="${fields.hasErrors('termsAccepted')}" th:errors="*{termsAccepted}" style="color:red;"></p>
+                    <p th:if="${#fields.hasErrors('termsAccepted')}" th:errors="*{termsAccepted}" style="color:red;"></p>
                 </div>
                 <button type="submit" style="margin-top: 1.5rem;">Konto erstellen</button>
             </form>

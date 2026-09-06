@@ -87,6 +87,7 @@ class AuthControllerTest {
                         .param("username", "validuser")
                         .param("password", "Password123!")
                         .param("passwordConfirm", "Password123!")
+                        .param("termsAccepted", "true")
                         .param("website", ""))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?registered"));
