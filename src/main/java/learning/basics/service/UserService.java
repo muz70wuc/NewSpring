@@ -92,4 +92,12 @@ public class UserService {
                 .map(user -> !user.getUsername().equals(currentUsername))
                 .orElse(false);
     }
+
+    @Transactional
+    public void deleteUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Benutzer nicht gefunden: " + username));
+
+        userRepository.delete(user);
+    }
 }

@@ -18,7 +18,8 @@
             <div th:if="${successMessage}" style="background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
                 <span th:text="${successMessage}"></span>
             </div>
-
+            
+            <!-- Formular 1: Profil speichern -->
             <form th:action="@{/profile}" th:object="${profileDto}" method="post">
                 
                 <label for="email">E-Mail-Adresse</label>
@@ -39,6 +40,28 @@
 
                 <button type="submit" style="margin-top: 1.5rem;">Einstellungen speichern</button>
             </form>
+
+            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #ccc;">
+
+            <!-- Formular 2: Account löschen -->
+            <div style="border: 1px solid red; padding: 1rem; border-radius: 4px; background-color: #fff8f8;">
+                <h3 style="color: red; margin-top: 0;">Gefahrenbereich</h3>
+                <p>Das Löschen deines Accounts kann nicht rückgängig gemacht werden.</p>
+
+                <form th:action="@{/profile/delete}" method="post" 
+                    onsubmit="return confirm('Bist du absolut sicher, dass du deinen Account unwiderruflich löschen möchtest?');">
+        
+                    <label for="deletePassword">Gib dein Passwort zur Bestätigung ein:</label>
+                    <input type="password" id="deletePassword" name="password" required placeholder="Dein aktuelles Passwort">
+        
+                    <!-- Fehlermeldung anzeigen, falls das Passwort falsch war -->
+                    <div th:if="${deleteError}" style="color: red; margin-top: 0.5rem;" th:text="${deleteError}"></div>
+
+                    <button type="submit" style="margin-top: 1rem; background-color: red; color: white; border: none; padding: 0.5rem 1rem; cursor: pointer;">
+                        Account unwiderruflich löschen
+                    </button>
+                </form>
+            </div>
         </section>
     </body>
 </html>

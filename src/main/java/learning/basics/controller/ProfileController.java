@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import learning.basics.dto.ProfileDto;
 import learning.basics.service.UserService;
@@ -51,5 +53,20 @@ public class ProfileController {
         userService.updateProfile(userDetails.getUsername(), profileDto);
         redirectAttributes.addFlashAttribute("successMessage", "Profil erfolgreich aktualisiert!");
         return "redirect:/profile";
+    }
+
+    // Account-Löschung
+    @PostMapping("/profile/delete")
+    public String deleteAccount(@AuthenticationPrincipal UserDetails currentUser,
+                                HttpServletRequest request) throws ServletException {
+
+        // 1. User anhand des Session-Namens löschen
+        userService.deleteUserByUsername(currentUser.getUsername());
+
+        // 2. Session beenden & abmelden
+        request.logout();
+
+        // 3. Weiterleitung zur Login-Seite
+        return "redirect:/";
     }
 }

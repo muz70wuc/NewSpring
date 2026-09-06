@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -79,5 +80,34 @@ class ProfileControllerTest {
                 .andExpect(flash().attributeExists("successMessage"));
 
         verify(userService).updateProfile(eq("max"), any());
+    }
+
+    @Test
+    @WithMockUser(username = "max")
+    @DisplayName("POST /profile/delete - Erfolgreiche Account-Löschung")
+    void testDeleteAccountSuccess() throws Exception {
+        mockMvc.perform(post("/profile/delete")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+
+        verify(userService).deleteUserByUsername("max");
+    }
+
+    @Test
+    @DisplayName("POST /profile/delete - Ohne CSRF-Token wird die Anfrage abgelehnt (403)")
+    @WithMockUser(username = "validuser")
+    void testDeleteAccountWithoutCsrfForbidden() throws Exception {
+        mockMvc.perform(post("/profile/delete"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("POST /profile/delete - Unangemeldeter Anonymus wird zum Login umgeleitet")
+    @WithAnonymousUser
+    void testDeleteAccountUnauthorized() throws Exception {
+        mockMvc.perform(post("/profile/delete")
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized());
     }
 }

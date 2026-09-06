@@ -1,27 +1,27 @@
 package learning.basics.service;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import learning.basics.dto.ContactDto;
 import learning.basics.dto.ProfileDto;
 import learning.basics.dto.RegisterDto;
 import learning.basics.mapper.UserMapper;
@@ -39,6 +39,9 @@ class UserServiceTest {
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private EmailService emailService;
 
     @InjectMocks
     private UserService userService;
@@ -189,5 +192,60 @@ class UserServiceTest {
         when(userRepository.findByEmail("max@beispiel.de")).thenReturn(Optional.of(testUser));
 
         assertFalse(userService.isEmailTakenByAnotherUser("max@beispiel.de", "max"));
+    }
+
+    // --- deleteUserByUsername ---
+    @Test
+    @DisplayName("deleteUserByUsername: Sollte User aus der Datenbank löschen")
+    void testDeleteUserByUsernameSuccess() {
+        when(userRepository.findByUsername("max")).thenReturn(Optional.of(testUser));
+
+        userService.deleteUserByUsername("max");
+
+        verify(userRepository).delete(testUser);
+    }
+
+    @Test
+    @DisplayName("deleteUserByUsername: Sollte UsernameNotFoundException werfen, wenn User nicht existiert")
+    void testDeleteUserByUsernameNotFound() {
+        when(userRepository.findByUsername("unbekannt")).thenReturn(Optional.empty());
+
+        assertThrows(UsernameNotFoundException.class, () -> userService.deleteUserByUsername("unbekannt"));
+
+        verify(userRepository, never()).delete(any());
+    }
+
+    // --- processContactForm ---
+    @Test
+    @DisplayName("processContactForm: Sollte User finden und E-Mail versenden")
+    void testProcessContactFormSuccess() {
+        // Arrange
+        ContactDto contactDto = new ContactDto();
+        contactDto.setSubject("Anfrage");
+        contactDto.setMessage("Test Nachricht");
+
+        when(userRepository.findByUsername("max")).thenReturn(Optional.of(testUser));
+
+        // Act
+        userService.processContactForm("max", contactDto);
+
+        // Verify
+        verify(emailService).sendContactEmail(testUser, contactDto);
+    }
+
+    @Test
+    @DisplayName("processContactForm: Sollte Exception werfen und keine E-Mail senden, wenn User nicht existiert")
+    void testProcessContactFormUserNotFound() {
+        // Arrange
+        ContactDto contactDto = new ContactDto();
+        when(userRepository.findByUsername("unbekannt")).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(UsernameNotFoundException.class, () -> 
+            userService.processContactForm("unbekannt", contactDto)
+        );
+
+        // Verify
+        verify(emailService, never()).sendContactEmail(any(), any());
     }
 }
