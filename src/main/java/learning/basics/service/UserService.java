@@ -19,12 +19,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final EmailService emailService;
+    private final TimerService timerService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, EmailService emailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, EmailService emailService, TimerService timerService  ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.emailService = emailService;
+        this.timerService = timerService;
     }
 
     public boolean existsUsername(String username) {
@@ -40,6 +42,10 @@ public class UserService {
     public User registerUser(RegisterDto registerDto) {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
         User user = userMapper.toEntity(registerDto, encodedPassword);
+
+        // timer für automatische account löschung nach 2 jahren (365*2 tage)
+        timerService.scheduleAccountDeletion(user.getUsername(), 365 * 2);
+        
         return userRepository.save(user);
     }
 

@@ -43,6 +43,9 @@ class UserServiceTest {
     @Mock
     private EmailService emailService;
 
+    @Mock
+    private TimerService timerService;
+
     @InjectMocks
     private UserService userService;
 
