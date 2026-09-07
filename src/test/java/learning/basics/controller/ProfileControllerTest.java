@@ -86,12 +86,34 @@ class ProfileControllerTest {
     @WithMockUser(username = "max")
     @DisplayName("POST /profile/delete - Erfolgreiche Account-Löschung")
     void testDeleteAccountSuccess() throws Exception {
-        mockMvc.perform(post("/profile/delete")
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+        when(userService.isPasswordCorrect("max", "correctPassword")).thenReturn(true);
 
+        mockMvc.perform(post("/profile/delete")
+                        .with(csrf())
+                        .param("password", "correctPassword"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("successMessage",
+                    "Sie haben Ihren Account erfolgreich aus der Datenbank gelöscht."));
+
+        verify(userService).isPasswordCorrect("max", "correctPassword");
         verify(userService).deleteUserByUsername("max");
+    }
+
+    @Test
+    @WithMockUser(username = "max")
+    @DisplayName("POST /profile/delete - Falsches Passwort verhindert Löschung")
+    void testDeleteAccountWithWrongPassword() throws Exception {
+        when(userService.isPasswordCorrect("max", "wrongPassword")).thenReturn(false);
+
+        mockMvc.perform(post("/profile/delete")
+                        .with(csrf())
+                        .param("password", "wrongPassword"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/profile"))
+                .andExpect(flash().attribute("deleteError", "Das eingegebene Passwort ist falsch."));
+
+        verify(userService, never()).deleteUserByUsername("max");
     }
 
     @Test

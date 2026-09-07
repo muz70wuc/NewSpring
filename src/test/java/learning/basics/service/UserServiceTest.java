@@ -98,6 +98,29 @@ class UserServiceTest {
         assertThrows(UsernameNotFoundException.class, () -> userService.findByUsername("unbekannt"));
     }
 
+    // --- isPasswordCorrect ---
+    @Test
+    @DisplayName("isPasswordCorrect: Sollte true bei korrektem Passwort zurückgeben")
+    void testIsPasswordCorrectTrue() {
+        when(userRepository.findByUsername("max")).thenReturn(Optional.of(testUser));
+        when(passwordEncoder.matches("rawPassword", "rawPassword")).thenReturn(true);
+
+        assertTrue(userService.isPasswordCorrect("max", "rawPassword"));
+
+        verify(passwordEncoder).matches("rawPassword", "rawPassword");
+    }
+
+    @Test
+    @DisplayName("isPasswordCorrect: Sollte false bei falschem Passwort zurückgeben")
+    void testIsPasswordCorrectFalse() {
+        when(userRepository.findByUsername("max")).thenReturn(Optional.of(testUser));
+        when(passwordEncoder.matches("wrongPassword", "rawPassword")).thenReturn(false);
+
+        assertFalse(userService.isPasswordCorrect("max", "wrongPassword"));
+
+        verify(passwordEncoder).matches("wrongPassword", "rawPassword");
+    }
+
     // --- registerUser ---
     @Test
     @DisplayName("registerUser: Sollte Passwort verschlüsseln, mappen und speichern")

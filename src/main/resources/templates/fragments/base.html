@@ -31,6 +31,7 @@
 
                     <!-- NUR FÜR ANONYME GÄSTE -->
                     <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Anmelden</a></li>
+                    <li sec:authorize="isAnonymous()"><a th:href="@{/register}">Registrieren</a></li>
                 </ul>
             </nav>
         </header>

@@ -10,22 +10,16 @@
             <h2>Herzlich Willkommen!</h2>
             <p>Das ist die öffentliche Startseite unserer Spring Boot Anwendung.</p>
 
+            <div th:if="${successMessage}" style="background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                <span th:text="${successMessage}"></span>
+            </div>
+
             <!-- WENN DER NUTZER ANGEMELDET IST -->
             <div sec:authorize="isAuthenticated()" style="margin-top: 2rem;">
                 <p>Du bist aktuell angemeldet als: <strong sec:authentication="name">User</strong></p>
                 <div style="display: flex; gap: 1rem;">
                     <a th:href="@{/userHome}" role="button">Zum Dashboard</a>
-                    
-                    <form th:action="@{/logout}" method="post" style="margin: 0;">
-                        <button type="submit" class="secondary">Abmelden</button>
-                    </form>
                 </div>
-            </div>
-
-            <!-- WENN DER NUTZER NICHT ANGEMELDET IST -->
-            <div sec:authorize="isAnonymous()" style="display: flex; gap: 1rem; margin-top: 2rem;">
-                <a th:href="@{/login}" role="button">Anmelden</a>
-                <a th:href="@{/register}" role="button" class="secondary">Registrieren</a>
             </div>
         </section>
     </body>

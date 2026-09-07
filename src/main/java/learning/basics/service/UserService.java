@@ -39,6 +39,11 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Benutzer nicht gefunden: " + username));
     }
 
+    public boolean isPasswordCorrect(String username, String rawPassword) {
+        User user = findByUsername(username);
+        return passwordEncoder.matches(rawPassword, user.getPassword());
+    }
+
     public User registerUser(RegisterDto registerDto) {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
         User user = userMapper.toEntity(registerDto, encodedPassword);

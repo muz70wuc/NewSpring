@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.ServletException;
@@ -58,13 +59,23 @@ public class ProfileController {
     // Account-Löschung
     @PostMapping("/profile/delete")
     public String deleteAccount(@AuthenticationPrincipal UserDetails currentUser,
-                                HttpServletRequest request) throws ServletException {
+                                @RequestParam String password,
+                                HttpServletRequest request,
+                                RedirectAttributes redirectAttributes) throws ServletException {
+
+        if (!userService.isPasswordCorrect(currentUser.getUsername(), password)) {
+            redirectAttributes.addFlashAttribute("deleteError", "Das eingegebene Passwort ist falsch.");
+            return "redirect:/profile";
+        }
 
         // 1. User anhand des Session-Namens löschen
         userService.deleteUserByUsername(currentUser.getUsername());
 
         // 2. Session beenden & abmelden
         request.logout();
+
+        redirectAttributes.addFlashAttribute("successMessage",
+            "Sie haben Ihren Account erfolgreich aus der Datenbank gelöscht.");
 
         // 3. Weiterleitung zur Login-Seite
         return "redirect:/";

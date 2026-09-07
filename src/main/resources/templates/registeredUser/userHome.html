@@ -8,10 +8,15 @@
         <section>
             <h2>Willkommen, <span th:text="${username}">Benutzer</span>!</h2>
             <p>Du befindest dich im geschützten Mitgliederbereich.</p>
-        
-            <form th:action="@{/logout}" method="post" style="margin-top: 2rem;">
-                <button type="submit" class="secondary">Abmelden</button>
-            </form>
+
+            <!-- Hier sind alle gespeicherten Nutzerdaten bis auf das Passwort -->
+            <div style="margin-top: 2rem; border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
+                <h3>Deine gespeicherten Daten:</h3>
+                <p><strong>E-Mail-Adresse:</strong> <span th:text="${email}"></span></p>
+                <p><strong>Telefonnummer:</strong> <span th:text="${phoneNumber}"></span></p>
+                <p><strong>Firmenname:</strong> <span th:text="${companyName}"></span></p>
+                <p><strong>Ansprechpartner:</strong> <span th:text="${contactPerson}"></span></p>
+            </div>
         </section>
     </body>
 </html>
