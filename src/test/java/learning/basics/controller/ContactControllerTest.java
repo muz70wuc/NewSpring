@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -53,5 +54,20 @@ class ContactControllerTest {
                 .andExpect(flash().attributeExists("successMessage"));
 
         verify(userService).processContactForm(eq("max"), any());
+    }
+
+    @Test
+    @WithMockUser(username = "max")
+    @DisplayName("POST /contact - Gibt Formular mit Validierungsfehlern zurück")
+    void testSendContactMessageWithValidationErrors() throws Exception {
+        mockMvc.perform(post("/contact")
+                        .with(csrf())
+                        .param("subject", "")
+                        .param("message", "zu kurz"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("registeredUser/contact"))
+                .andExpect(model().hasErrors());
+
+        verify(userService, never()).processContactForm(any(), any());
     }
 }

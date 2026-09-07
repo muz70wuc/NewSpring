@@ -162,9 +162,25 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("isProfileIncomplete: Sollte true zurückgeben, wenn Email leer ist")
+    void testIsProfileIncompleteTrueBlankEmail() {
+        testUser.setEmail("   ");
+        when(userRepository.findByUsername("max")).thenReturn(Optional.of(testUser));
+        assertTrue(userService.isProfileIncomplete("max"));
+    }
+
+    @Test
     @DisplayName("isProfileIncomplete: Sollte true zurückgeben, wenn Company Name leer ist")
     void testIsProfileIncompleteTrueBlankCompany() {
         testUser.setCompanyName("   ");
+        when(userRepository.findByUsername("max")).thenReturn(Optional.of(testUser));
+        assertTrue(userService.isProfileIncomplete("max"));
+    }
+
+    @Test
+    @DisplayName("isProfileIncomplete: Sollte true zurückgeben, wenn Company Name fehlt")
+    void testIsProfileIncompleteTrueMissingCompany() {
+        testUser.setCompanyName(null);
         when(userRepository.findByUsername("max")).thenReturn(Optional.of(testUser));
         assertTrue(userService.isProfileIncomplete("max"));
     }

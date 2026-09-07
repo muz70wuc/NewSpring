@@ -51,6 +51,7 @@ class AuthControllerTest {
     void testRegisterHoneypot() throws Exception {
         mockMvc.perform(post("/register")
                         .with(csrf())
+                        .header("X-Forwarded-For", "192.0.2.10")
                         .param("username", "botuser")
                         .param("password", "Password123!")
                         .param("passwordConfirm", "Password123!")
@@ -58,6 +59,7 @@ class AuthControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
 
+            verify(userService, never()).existsUsername("botuser");
         verify(userService, never()).registerUser(any());
     }
 
@@ -66,6 +68,7 @@ class AuthControllerTest {
     void testRegisterPasswordMismatch() throws Exception {
         mockMvc.perform(post("/register")
                         .with(csrf())
+                        .header("X-Forwarded-For", "192.0.2.11")
                         .param("username", "validuser")
                         .param("password", "Password123!")
                         .param("passwordConfirm", "FalschesPW!")
@@ -84,6 +87,7 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/register")
                         .with(csrf())
+                        .header("X-Forwarded-For", "192.0.2.12")
                         .param("username", "validuser")
                         .param("password", "Password123!")
                         .param("passwordConfirm", "Password123!")
@@ -93,5 +97,26 @@ class AuthControllerTest {
                 .andExpect(redirectedUrl("/login?registered"));
 
         verify(userService).registerUser(any());
+    }
+
+    @Test
+    @DisplayName("POST /register - Bereits vergebener Benutzername -> Zurück zum Formular")
+    void testRegisterUsernameAlreadyTaken() throws Exception {
+        when(userService.existsUsername("validuser")).thenReturn(true);
+
+        mockMvc.perform(post("/register")
+                        .with(csrf())
+                        .header("X-Forwarded-For", "192.0.2.13")
+                        .param("username", "validuser")
+                        .param("password", "Password123!")
+                        .param("passwordConfirm", "Password123!")
+                        .param("termsAccepted", "true")
+                        .param("website", ""))
+                .andExpect(status().isOk())
+                .andExpect(view().name("auth/register"))
+                .andExpect(model().hasErrors());
+
+        verify(userService).existsUsername("validuser");
+        verify(userService, never()).registerUser(any());
     }
 }

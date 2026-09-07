@@ -1,9 +1,11 @@
 package learning.basics.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -47,5 +49,27 @@ class EmailServiceTest {
 
         // Verify
         verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
+    }
+
+    @Test
+    @DisplayName("Sollte fehlende Profildaten im E-Mail-Text als Nicht angegeben ausgeben")
+    void testSendContactEmailWithMissingProfileData() {
+        User testUser = new User();
+        testUser.setUsername("MaxMustermann");
+
+        ContactDto contactDto = new ContactDto();
+        contactDto.setSubject("Anfrage");
+        contactDto.setMessage("Eine ausreichend lange Nachricht.");
+
+        emailService.sendContactEmail(testUser, contactDto);
+
+        ArgumentCaptor<SimpleMailMessage> mailCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
+        verify(mailSender).send(mailCaptor.capture());
+
+        String body = mailCaptor.getValue().getText();
+        assertTrue(body.contains("E-Mail:       Nicht angegeben"));
+        assertTrue(body.contains("Firma:        Nicht angegeben"));
+        assertTrue(body.contains("Ansprechp.:   Nicht angegeben"));
+        assertTrue(body.contains("Telefon:      Nicht angegeben"));
     }
 }
