@@ -8,6 +8,10 @@ RUN mvn clean package -DskipTests
 # Stage 2: Schlankes Laufzeit-Image
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
+
+# Zertifikate für SSL/TLS (SMTP 1&1) installieren
+RUN apk add --no-cache ca-certificates
+
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

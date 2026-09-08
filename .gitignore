@@ -1,5 +1,6 @@
 src/main/resources/application.properties
 variable.env
+.env
 
 HELP.md
 target/
@@ -34,6 +35,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Docker ###
-docker-compose.yml

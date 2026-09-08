@@ -1,0 +1,38 @@
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: app_postgres_db
+    environment:
+      POSTGRES_DB: DS-Profiles
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d DS-Profiles"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web-app:
+    build: .
+    container_name: app_spring_boot
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/DS-Profiles
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_TARGET: ${MAIL_TARGET}
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
