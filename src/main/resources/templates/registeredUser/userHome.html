@@ -2,20 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org"
     th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
     <head>
-        <title>Home - DS-Portfolio</title>
+        <title>Dashboard - DS-Portfolio</title>
     </head>
     <body>
         <section>
-            <h2>Willkommen, <span th:text="${username}">Benutzer</span>!</h2>
-            <p>Du befindest dich im geschützten Mitgliederbereich.</p>
+            <h2>Willkommen zurück, <span th:text="${username}">Benutzer</span>!</h2>
+            <p style="color: var(--pico-secondary);">Du befindest dich im geschützten Mitgliederbereich.</p>
 
-            <!-- Hier sind alle gespeicherten Nutzerdaten bis auf das Passwort -->
-            <div style="margin-top: 2rem; border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
-                <h3>Deine gespeicherten Daten:</h3>
-                <p><strong>E-Mail-Adresse:</strong> <span th:text="${email}"></span></p>
-                <p><strong>Telefonnummer:</strong> <span th:text="${phoneNumber}"></span></p>
-                <p><strong>Firmenname:</strong> <span th:text="${companyName}"></span></p>
-                <p><strong>Ansprechpartner:</strong> <span th:text="${contactPerson}"></span></p>
+            <!-- Karte mit den gespeicherten Nutzerdaten -->
+            <article style="margin-top: 2rem;">
+                <header>
+                    <h3>📋 Deine hinterlegten Daten</h3>
+                </header>
+                
+                <div class="grid">
+                    <div>
+                        <p><strong>Benutzername:</strong> <br><span th:text="${username}">-</span></p>
+                        <p><strong>E-Mail-Adresse:</strong> <br><span th:text="${email}">-</span></p>
+                        <p><strong>Telefonnummer:</strong> <br><span th:text="${phoneNumber} ?: 'Nicht angegeben'">-</span></p>
+                    </div>
+                    <div>
+                        <p><strong>Firmenname:</strong> <br><span th:text="${companyName} ?: 'Nicht angegeben'">-</span></p>
+                        <p><strong>Ansprechpartner:</strong> <br><span th:text="${contactPerson} ?: 'Nicht angegeben'">-</span></p>
+                    </div>
+                </div>
+
+                <footer>
+                    <a th:href="@{/profile}" class="secondary outline" role="button" style="font-size: 0.85rem;">Daten bearbeiten</a>
+                </footer>
+            </article>
+
+            <!-- Aktionen / Quick Links -->
+            <div style="margin-top: 2rem;" class="grid">
+                <article>
+                    <h4> Direct Support & Kontakt</h4>
+                    <p>Möchtest du eine Frage stellen oder ein Projekt besprechen? Deine hinterlegten Kontaktdaten werden direkt mit gesendet.</p>
+                    <a th:href="@{/contact}" role="button">Nachricht schreiben</a>
+                </article>
             </div>
         </section>
     </body>

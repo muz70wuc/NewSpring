@@ -1,26 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
     <head>
-        <title>Startseite - DS-Portfolio</title>
+        <title>Denis Strakhov - Backend & Fullstack Softwareentwickler</title>
     </head>
     <body>
         <section>
-            <h2>Herzlich Willkommen!</h2>
-            <p>Das ist die öffentliche Startseite unserer Spring Boot Anwendung.</p>
-
-            <div th:if="${successMessage}" style="background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-                <span th:text="${successMessage}"></span>
-            </div>
-
-            <!-- WENN DER NUTZER ANGEMELDET IST -->
-            <div sec:authorize="isAuthenticated()" style="margin-top: 2rem;">
-                <p>Du bist aktuell angemeldet als: <strong sec:authentication="name">User</strong></p>
-                <div style="display: flex; gap: 1rem;">
-                    <a th:href="@{/userHome}" role="button">Zum Dashboard</a>
+            <!-- Hero Section -->
+            <div style="padding: 2rem 0; text-align: center;">
+                <h1 style="margin-bottom: 0.5rem;">Denis Strakhov</h1>
+                <p style="font-size: 1.25rem; color: var(--pico-secondary);">Student & Backend-Entwickler mit Fokus auf Spring Boot, Docker & Microservices</p>
+                <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;">
+                    <a th:href="@{/register}" sec:authorize="isAnonymous()" role="button">Zugang anfordern</a>
+                    <a th:href="@{/contact}" sec:authorize="isAuthenticated()" role="button">Nachricht senden</a>
+                    <a href="https://github.com" target="_blank" class="secondary outline" role="button">GitHub Profil</a>
                 </div>
             </div>
+
+            <hr>
+
+            <!-- Tech Stack Showcase -->
+            <div style="margin: 3rem 0;">
+                <h2> Tech-Stack & Kompetenzen</h2>
+                <div class="grid">
+                    <article>
+                        <h3>Backend</h3>
+                        <p>Java 21, Spring Boot 3, Spring Security, JPA / Hibernate, REST APIs, Maven</p>
+                    </article>
+                    <article>
+                        <h3>Datenbanken & DevOps</h3>
+                        <p>PostgreSQL, Docker, Docker Compose, Git, Linux / Bash</p>
+                    </article>
+                    <article>
+                        <h3>Frontend & Tooling</h3>
+                        <p>HTML5, CSS3, JavaScript, Thymeleaf, Pico.css, Postman</p>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Portfolio Projekte -->
+            <div style="margin: 3rem 0;">
+                <h2> Ausgewählte Projekte</h2>
+                <div class="grid-cards">
+                    
+                    <!-- Projekt 1 -->
+                    <article>
+                        <header>
+                            <span class="badge">Spring Boot</span>
+                            <span class="badge">Docker</span>
+                            <span class="badge">PostgreSQL</span>
+                        </header>
+                        <h3>Spring Boot Web Application</h3>
+                        <p>Vollständiges Kundenportal mit Formularvalidierung, SMTP-Mailversand via Ionos, PostgreSQL-Anbindung und containerisierter deploymentfähiger Docker-Infrastruktur.</p>
+                        <footer>
+                            <small>Key-Features: DSGVO-Löschung, Honeypot Anti-Spam, Spring Security Auth</small>
+                        </footer>
+                    </article>
+
+                    <!-- Projekt 2 (Platzhalter für weiteres Projekt) -->
+                    <article>
+                        <header>
+                            <span class="badge">Java</span>
+                            <span class="badge">REST API</span>
+                        </header>
+                        <h3>Microservice Backend</h3>
+                        <p>Erstellung einer hochverfügbaren Schnittstelle für externe Systemintegrationen inklusive automatisiertem Logging und Exception-Handling.</p>
+                        <footer>
+                            <small>Key-Features: OAuth2, Unit-Testing (JUnit 5)</small>
+                        </footer>
+                    </article>
+
+                </div>
+            </div>
+
+            <!-- Hinweis für Recruiter / Firmen -->
+            <article sec:authorize="isAnonymous()" style="margin-top: 3rem; background-color: var(--pico-card-background-color); border-left: 4px solid var(--pico-primary);">
+                <h3> Möchten Sie mehr erfahren?</h3>
+                <p>Erstellen Sie einen kostenlosen Test-Account, um Zugriff auf das geschützte Mitglieder-Dashboard, direkte Kontaktmöglichkeiten und weiterführende Projektdetails zu erhalten.</p>
+                <a th:href="@{/register}" role="button" class="outline">Jetzt registrieren</a>
+            </article>
+
         </section>
     </body>
 </html>

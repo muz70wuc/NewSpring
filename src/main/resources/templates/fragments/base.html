@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    data-theme="dark"
     th:fragment="layout(title, content)">
     <head>
         <meta charset="UTF-8">
@@ -8,18 +9,39 @@
         <meta name="robots" content="noindex, nofollow">
         <title th:replace="${title}">DS-Portfolio</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+        <style>
+            /* Dezentes Custom-Styling für Akzente */
+            :root {
+                --pico-primary: #06b6d4; /* Modernes Cyan als Hauptfarbe */
+                --pico-primary-hover: #0891b2;
+            }
+            .grid-cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-top: 1.5rem;
+            }
+            .badge {
+                display: inline-block;
+                padding: 0.2rem 0.6rem;
+                border-radius: 4px;
+                font-size: 0.75rem;
+                font-weight: bold;
+                background-color: var(--pico-card-background-color);
+                border: 1px solid var(--pico-border-color);
+                margin-right: 0.3rem;
+            }
+        </style>
     </head>
     <body>
     
         <header class="container">
             <nav>
                 <ul>
-                    <li><strong><a th:href="@{/}" class="secondary">DS-Portfolio</a></strong></li>
+                    <li><strong><a th:href="@{/}" class="contrast"> Denis Strakhov</a></strong></li>
                 </ul>
                 <ul>
                     <li><a th:href="@{/}">Home</a></li>
-
-                    <!-- NUR FÜR ANGEMELDETE NUTZER -->
                     <li sec:authorize="isAuthenticated()"><a th:href="@{/userHome}">Dashboard</a></li>
                     <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">Profil</a></li>
                     <li sec:authorize="isAuthenticated()"><a th:href="@{/contact}">Kontakt</a></li>
@@ -28,22 +50,21 @@
                             <button type="submit" class="secondary outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Logout</button>
                         </form>
                     </li>
-
-                    <!-- NUR FÜR ANONYME GÄSTE -->
                     <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Anmelden</a></li>
-                    <li sec:authorize="isAnonymous()"><a th:href="@{/register}">Registrieren</a></li>
+                    <li sec:authorize="isAnonymous()"><a th:href="@{/register}" role="button" class="outline">Registrieren</a></li>
                 </ul>
             </nav>
         </header>
 
-        <main class="container" style="max-width: 700px; margin-top: 2rem;">
-            <article th:replace="${content}">
+        <!-- Container ohne künstliche 700px Grenze für ein moderneres Dashboard/Portfolio -->
+        <main class="container">
+            <section th:replace="${content}">
                 <!-- Platzhalter -->
-            </article>
+            </section>
         </main>
 
-        <footer class="container" style="text-align: center; margin-top: 3rem; font-size: 0.8rem; color: #888;">
-            <p>&copy; 2026 DS-Portfolio - Alle Rechte vorbehalten</p>
+        <footer class="container" style="text-align: center; margin-top: 4rem; font-size: 0.85rem; color: #888; border-top: 1px solid var(--pico-border-color); padding-top: 2rem;">
+            <p>&copy; 2026 Denis Strakhov | <a th:href="@{/privacy}">Datenschutz</a> | <a th:href="@{/terms}">Nutzungsbedingungen</a></p>
         </footer>
 
     </body>
