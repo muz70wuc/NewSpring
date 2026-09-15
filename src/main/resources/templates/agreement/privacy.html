@@ -1,9 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
     <head>
-        <title>Startseite - DS-Portfolio</title>
+        <title>Datenschutzerklärung - DS-Portfolio</title>
     </head>
     <body>
-        
+        <section>
+            <hgroup>
+                <h2>Datenschutzerklärung</h2>
+                <p>Informationen über die Erhebung und Verarbeitung Ihrer personenbezogenen Daten</p>
+            </hgroup>
+
+            <article>
+                <h3>1. Verantwortlicher</h3>
+                <p>
+                    Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br>
+                    <strong>Denis Strakhov</strong><br>
+                    E-Mail: <a href="mailto:kontakt@beispiel.de">kontakt@beispiel.de</a>
+                </p>
+
+                <h3>2. Erfassung und Speicherung personenbezogener Daten</h3>
+                <p>
+                    Beim Erstellen eines Benutzerkontos sowie bei der Nutzung der Plattform verarbeiten wir folgende Daten:
+                </p>
+                <ul>
+                    <li>Benutzername</li>
+                    <li>Passwort (ausschließlich als salted/hashed Wert gespeichert)</li>
+                    <li>Sicherheits- / Checkbox-Status (z. B. Akzeptanz der Bedingungen)</li>
+                    <li>IP-Adresse und Zeitstempel bei der Registrierung / Anmeldung (zur Spam- und Missbrauchsabwehr)</li>
+                </ul>
+
+                <h3>3. Zweck und Rechtsgrundlage der Verarbeitung</h3>
+                <p>
+                    Die Verarbeitung erfolgt zur Bereitstellung eines geschützten Mitglieder-Dashboards und zur Bearbeitung von Anfragen (Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO – Vertragserfüllung und vorvertragliche Maßnahmen).
+                </p>
+
+                <h3>4. Anti-Spam-Maßnahmen (Honeypot)</h3>
+                <p>
+                    Im Registrierungsformular nutzen wir eine unsichtbare Bot-Falle (Honeypot). Füllt ein automatisierter Bot dieses Feld aus, wird die Registrierung verworfen. Dabei werden keine gesonderten personenbezogenen Profile erstellt.
+                </p>
+
+                <h3>5. Speicherdauer & DSGVO-Löschung</h3>
+                <p>
+                    Ihre Daten bleiben gespeichert, solange Ihr Benutzerkonto aktiv ist. Sie haben jederzeit das Recht, die vollständige Löschung Ihres Kontos und aller assoziierten Daten im Profilbereich anzufordern oder durchzuführen.
+                </p>
+
+                <h3>6. Ihre Rechte</h3>
+                <p>Sie haben nach der DSGVO das Recht auf:</p>
+                <ul>
+                    <li>Auskunft über Ihre bei uns gespeicherten Daten (Art. 15 DSGVO)</li>
+                    <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO)</li>
+                    <li>Löschung Ihrer Daten (Art. 17 DSGVO)</li>
+                    <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+                </ul>
+
+                <p style="margin-top: 2rem;">
+                    <a th:href="@{/}" role="button" class="secondary outline">Zurück zur Startseite</a>
+                </p>
+            </article>
+        </section>
     </body>
 </html>

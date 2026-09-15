@@ -1,9 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragments/base :: layout(~{::title}, ~{::section})}">
     <head>
-        <title>Startseite - DS-Portfolio</title>
+        <title>Nutzungsbedingungen - DS-Portfolio</title>
     </head>
     <body>
-        
+        <section>
+            <hgroup>
+                <h2>Nutzungsbedingungen</h2>
+                <p>Regeln für die Nutzung des DS-Portfolio Online-Dienstes</p>
+            </hgroup>
+
+            <article>
+                <h3>1. Geltungsbereich</h3>
+                <p>
+                    Diese Nutzungsbedingungen gelten für die Verwendung des Portals und aller damit verbundenen Unterseiten und Dienste von Denis Strakhov. Mit der Registrierung erklären Sie sich mit diesen Bedingungen einverstanden.
+                </p>
+
+                <h3>2. Registrierung und Zugangsdaten</h3>
+                <p>
+                    Der Nutzer ist verpflichtet, bei der Registrierung wahrheitsgemäße Angaben zu machen und seine Zugangsdaten (Passwort) vertraulich zu behandeln. Das Teilen von Zugängen mit Dritter ist untersagt.
+                </p>
+
+                <h3>3. Nutzungseinschränkungen & Sicherheit</h3>
+                <p>
+                    Es ist untersagt, die Plattform für rechtswidrige Zwecke, Angriffe auf die Infrastruktur (z. B. Denial-of-Service, Injection-Versuche) oder den automatisierten Mail-Versand zu nutzen. Automatische Zugriffe (Bots) auf Formulare ohne Freigabe sind nicht gestattet.
+                </p>
+
+                <h3>4. Haftungsausschluss (Disclaimer)</h3>
+                <p>
+                    Diese Plattform dient demonstrativen Portfolio-Zwecken. Die bereitgestellten Inhalte und Code-Beispiele werden „wie gesehen“ ohne Garantie auf Vollständigkeit, Richtigkeit oder permanente Verfügbarkeit bereitgestellt. 
+                </p>
+                <p>
+                    Für Schäden, die aus der Nutzung der Website oder der Unmöglichkeit des Zugriffs entstehen, wird – soweit gesetzlich zulässig – keine Haftung übernommen.
+                </p>
+
+                <h3>5. Beendigung des Nutzungsverhältnisses</h3>
+                <p>
+                    Nutzer können Ihr Konto jederzeit löschen. Der Betreiber behält sich das Recht vor, Accounts bei Verstößen gegen diese Nutzungsbedingungen ohne Vorankündigung zu sperren oder zu entfernen.
+                </p>
+
+                <p style="margin-top: 2rem;">
+                    <a th:href="@{/}" role="button" class="secondary outline">Zurück zur Startseite</a>
+                </p>
+            </article>
+        </section>
     </body>
 </html>
